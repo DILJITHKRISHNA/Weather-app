@@ -9,12 +9,13 @@ import WeatherForecast from './WeatherForecast.jsx';
 import { TiWeatherPartlySunny } from "react-icons/ti"
 import WeatherCard from '../Components/WeatherCard.jsx';
 import { getWeatherByCity } from '../services/weatherService.js';
+import { getWeatherByCoords } from '../services/CurrentCoord.js';
 
 
 function Home() {
 
     const [weatherData, setWeatherData] = useState(null);
-    const [city, setCity] = useState('kerala');
+    const [city, setCity] = useState('');
     const [search, setSearch] = useState(null)
 
     const handleSearch = () => {
@@ -44,9 +45,7 @@ function Home() {
     }, []);
 
     const sortedCityData = cityData.sort((a, b) => b.temp - a.temp);
-
     const topFourCities = sortedCityData.slice(0, 4);
-
 
     useEffect(() => {
         const fetchWeather = async () => {
@@ -63,6 +62,25 @@ function Home() {
 
         fetchWeather();
     }, [city]);
+
+    useEffect(() => {
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(
+            async (position) => {
+              const { latitude, longitude } = position.coords;
+              const data = await getWeatherByCoords(latitude, longitude);
+              console.log(data,"data");
+              setWeatherData(data);
+            },
+            (error) => {
+              console.error("Error getting location:", error);
+              setWeatherData(null); // Set to null if geolocation fails
+            }
+          );
+        } else {
+          console.warn("Geolocation is not supported by your browser.");
+        }
+      }, []); // Run once on component mount
 
     const currentDate = new Date();
 
@@ -85,7 +103,7 @@ function Home() {
                     <Sidebar />
                     <div className='absolute backdrop-blur-sm bg-gray-700/50 top-2 right-[60%] h-[40%] mt-8 w-[30%] rounded-2xl'>
                         <div className='flex flex-row'>
-                            <img src={cloud} alt="" className='w-[48%] h-[56%] mt-2 ' />
+                            <img src={cloud} alt="" className='w-[48%] h-[56%] mb-2 ' />
                             <div className='flex flex-col mt-6 text-lg'>
                                 <span className='ml-16 text-white font-mono'>Time: {timeString}</span>
                                 <span className='ml-16 text-white font-mono'>Date: {dateString}</span>
@@ -130,7 +148,7 @@ function Home() {
                     <div className='absolute backdrop-blur-sm bg-gray-700/50 bottom-8 right-[60%] h-[43%] mt-8 w-[30%] rounded-2xl'>
                         <WeatherForecast city={city} />
                     </div>
-                    <span className='absolute top-[47%] left-[43%] font-bold text-white'>7 days forcast</span>
+                    <span className='absolute top-[47%] left-[43%] font-bold text-white'>Search for a location to get 7 days forcast</span>
 
                     <Daily city={city} />
 
