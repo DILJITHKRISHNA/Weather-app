@@ -65,22 +65,22 @@ function Home() {
 
     useEffect(() => {
         if ("geolocation" in navigator) {
-          navigator.geolocation.getCurrentPosition(
-            async (position) => {
-              const { latitude, longitude } = position.coords;
-              const data = await getWeatherByCoords(latitude, longitude);
-              console.log(data,"data");
-              setWeatherData(data);
-            },
-            (error) => {
-              console.error("Error getting location:", error);
-              setWeatherData(null); // Set to null if geolocation fails
-            }
-          );
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const { latitude, longitude } = position.coords;
+                    const data = await getWeatherByCoords(latitude, longitude);
+                    console.log(data, "datahttps://weathry-five.vercel.app/");
+                    setWeatherData(data);
+                },
+                (error) => {
+                    console.error("Error getting location:", error);
+                    setWeatherData(null); // Set to null if geolocation fails
+                }
+            );
         } else {
-          console.warn("Geolocation is not supported by your browser.");
+            console.warn("Geolocation is not supported by your browser.");
         }
-      }, []); // Run once on component mount
+    }, []); // Run once on component mount
 
     const currentDate = new Date();
 
@@ -101,9 +101,9 @@ function Home() {
                         className="object-cover w-full h-full"
                     />
                     <Sidebar />
-                    <div className='absolute backdrop-blur-sm bg-gray-700/50 top-2 right-[60%] h-[40%] mt-8 w-[30%] rounded-2xl'>
+                    <div className='absolute backdrop-blur-sm bg-gray-700/50 top-2 sm:right-[60%] sm:h-[40%] mt-8 sm:w-[30%] rounded-2xl'>
                         <div className='flex flex-row'>
-                            <img src={cloud} alt="" className='w-[48%] h-[56%] mb-2 ' />
+                            <img src={cloud} alt="" className='sm:w-[48%] sm:h-[56%] w-[11rem] h-[8rem] mb-2 ' />
                             <div className='flex flex-col mt-6 text-lg'>
                                 <span className='ml-16 text-white font-mono'>Time: {timeString}</span>
                                 <span className='ml-16 text-white font-mono'>Date: {dateString}</span>
@@ -123,7 +123,7 @@ function Home() {
                             <span className='font-bold text-white mb-2'>{weatherData?.weather[0]?.description}</span>
                         </div>
                     </div>
-                    <span className='absolute top-[47%] left-[11%] font-bold text-white'>Other Details</span>
+                    <span className='sm:absolute top-[47%] left-[11%] font-bold text-white'>Other Details</span>
                     <div className='absolute backdrop-blur-sm bg-gray-700/50 top-2 right-12 h-[40%] mt-8 w-[55%] rounded-2xl'>
                         <span className='ml-4 font-bold text-white flex flex-row gap-2 items-center'>
                             <TiWeatherPartlySunny className='w-12 h-12' />Location-Based Weather
@@ -135,7 +135,7 @@ function Home() {
                             ))}
                         </div>
 
-                        <span className='absolute top-2 right-12 bg-transparent flex items-center'>
+                        <span className='sm:absolute top-2 right-12 bg-transparent flex items-center'>
                             <input
                                 type="search"
                                 className='bg-gray-700 backdrop-blur-lg h-8 w-full rounded-2xl p-3 text-white'
@@ -145,10 +145,10 @@ function Home() {
                             <FaSearch onClick={handleSearch} type='submit' className='absolute z-10 ml-[84%] bg-transparent text-xl text-white' />
                         </span>
                     </div>
-                    <div className='absolute backdrop-blur-sm bg-gray-700/50 bottom-8 right-[60%] h-[43%] mt-8 w-[30%] rounded-2xl'>
+                    <div className='sm:absolute backdrop-blur-sm bg-gray-700/50 bottom-8 right-[60%] h-[43%] mt-8 w-[30%] rounded-2xl'>
                         <WeatherForecast city={city} />
                     </div>
-                    <span className='absolute top-[47%] left-[43%] font-bold text-white'>Search for a location to get 7 days forcast</span>
+                    <span className='sm:absolute top-[47%] left-[43%] font-bold text-white'>Search for a location to get 7 days forcast</span>
 
                     <Daily city={city} />
 
